@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vinewood Roleplay | FiveM Server</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3ece1; --bg2:#e8dfd0; --ink:#241c33; --muted:#5d5470; --line:#cfc4b2;
+  --sun:#e8552d; --plate:#f2c230; --plate-ink:#1d1a12; --sea:#1f7a8c;
+  --head:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;
+  --body:'Figtree','Segoe UI',Helvetica,Arial,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#1a1428;--bg2:#241b38;--ink:#f3ece1;--muted:#b3a8c8;--line:#3d3258;--sun:#ff7a45;--sea:#4fc3d6}
+}
+:root[data-theme="dark"]{--bg:#1a1428;--bg2:#241b38;--ink:#f3ece1;--muted:#b3a8c8;--line:#3d3258;--sun:#ff7a45;--sea:#4fc3d6}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--body)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sea);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);border-bottom:1px solid var(--line);z-index:5}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.logo{font:900 24px var(--head);letter-spacing:.02em;text-decoration:none}
+.logo b{color:var(--sun)}
+nav{display:flex;gap:20px;font-weight:600;font-size:15px;overflow-x:auto}
+nav a{text-decoration:none;color:var(--muted);white-space:nowrap}
+nav a:hover{color:var(--ink)}
+.hero{padding:72px 0 64px;background:linear-gradient(180deg,var(--bg2),var(--bg))}
+.hero .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+h1{font:900 clamp(48px,8vw,96px)/.92 var(--head);margin:0 0 20px;letter-spacing:-.005em}
+.hero p{max-width:46ch;color:var(--muted);font-size:19px;margin:0 0 28px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:13px 24px;border-radius:6px;font-weight:600;text-decoration:none;border:2px solid var(--ink);cursor:pointer;font-family:inherit;font-size:16px;background:none;color:var(--ink)}
+.btn.main{background:var(--sun);border-color:var(--sun);color:#fff}
+.btn:hover{transform:translateY(-1px)}
+/* The memorable thing: a plate */
+.plate{background:var(--plate);color:var(--plate-ink);border:6px solid var(--plate-ink);border-radius:14px;padding:20px 24px 22px;box-shadow:0 14px 0 -6px rgba(0,0,0,.18);transform:rotate(-2deg);position:relative}
+.plate::before,.plate::after{content:"";position:absolute;top:50%;width:12px;height:12px;border-radius:50%;background:var(--plate-ink);opacity:.7;transform:translateY(-50%)}
+.plate::before{left:8px}.plate::after{right:8px}
+.plate .state{font:700 15px var(--head);text-align:center;letter-spacing:.2em}
+.plate .ip{font:900 clamp(34px,5vw,52px)/1 var(--head);text-align:center;margin:6px 0 12px;word-break:break-all}
+.plate .row{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:2px solid var(--plate-ink);padding-top:12px;font-weight:600;font-size:15px}
+.live{display:inline-flex;align-items:center;gap:8px}
+.live i{width:10px;height:10px;border-radius:50%;background:#1a9b4b;box-shadow:0 0 0 0 rgba(26,155,75,.6);animation:p 2s infinite}
+@keyframes p{70%{box-shadow:0 0 0 9px rgba(26,155,75,0)}100%{box-shadow:0 0 0 0 rgba(26,155,75,0)}}
+.copy{background:var(--plate-ink);color:var(--plate);border:0;border-radius:5px;padding:8px 14px;font:600 14px var(--body);cursor:pointer}
+section{padding:72px 0;border-top:1px solid var(--line)}
+h2{font:900 clamp(34px,5vw,52px)/1 var(--head);margin:0 0 12px}
+.lead{color:var(--muted);max-width:56ch;margin:0 0 36px}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.feat div{padding:4px 28px 4px 0;margin-right:28px;border-right:1px solid var(--line)}
+.feat div:last-child{border:0;margin:0}
+h3{font:700 26px var(--head);margin:0 0 6px;color:var(--sun)}
+.feat p,.job p{margin:0;color:var(--muted);font-size:16px}
+.jobs{display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+.job{padding:16px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:16px}
+.job h3{color:var(--ink);font-size:22px;margin:0}
+.job span{font-weight:600;font-size:14px;color:var(--sea);white-space:nowrap}
+details{border-bottom:1px solid var(--line);padding:16px 0}
+summary{font:700 24px var(--head);cursor:pointer;list-style:none;display:flex;justify-content:space-between}
+summary::after{content:"+";color:var(--sun)}
+details[open] summary::after{content:"\2212"}
+details p{margin:10px 0 0;color:var(--muted);max-width:64ch}
+ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+ol.steps li{counter-increment:s;border-top:4px solid var(--sun);padding-top:14px}
+ol.steps li::before{content:counter(s);font:900 44px/1 var(--head);display:block;color:var(--sun)}
+ol.steps b{display:block;font:700 22px var(--head);margin:4px 0}
+ol.steps span{color:var(--muted);font-size:15px}
+footer{background:var(--ink);color:var(--bg);padding:40px 0}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+footer small{opacity:.7}
+
+[hidden]{display:none!important}
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.cat{text-align:left;background:var(--bg2);border:1px solid var(--line);border-left:6px solid var(--cc);border-radius:6px;padding:12px 14px;color:var(--ink);font:inherit;cursor:pointer}
+.cat[aria-pressed="true"]{outline:2px solid var(--cc)}
+.cat b{display:block;font:700 22px/1.1 var(--head)}
+.cat span{display:block;color:var(--muted);font-size:14px;line-height:1.35;margin-top:2px}
+.cat small{color:var(--muted);font-size:12px}
+.fbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.fbar input{flex:1;min-width:160px;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg2);color:var(--ink);font:400 15px var(--body)}
+.tab{border:0;border-bottom:3px solid transparent;background:none;color:var(--muted);padding:8px 6px;font:600 15px var(--body);cursor:pointer}
+.tab[aria-pressed="true"]{color:var(--ink);border-color:var(--sun)}
+.thead,.tp{display:grid;grid-template-columns:1fr 92px 64px 64px 64px;gap:10px;align-items:center;padding:12px 8px}
+.thead{font-weight:600;font-size:13px;color:var(--muted);border-bottom:2px solid var(--line)}
+.tp{width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--ink);font:inherit;cursor:pointer}
+.tp:hover{background:var(--bg2)}
+.tpt{display:block;font:700 22px/1.15 var(--head)}
+.tpc{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.tpc i{display:inline-block;width:10px;height:10px;margin-right:6px;background:var(--cc)}
+.tag{margin-left:8px;border:1px solid var(--line);border-radius:4px;padding:0 6px;font-size:12px}
+.pin{color:var(--sun);font-size:14px;margin-right:6px}
+.tpn{text-align:center;font-weight:600;font-size:15px}
+.tpn.hot{color:var(--sun)}
+.tpa{display:flex}
+.av{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;color:#fff;font:700 14px var(--body);flex:none;border:2px solid var(--bg)}
+.tpa .av{margin-right:-8px}
+.post{display:grid;grid-template-columns:48px 1fr;gap:14px;border-bottom:1px solid var(--line);padding:20px 0}
+.post .av{width:44px;height:44px;font-size:18px}
+.post p{margin:6px 0 10px;white-space:pre-wrap;max-width:68ch}
+.pn{font-weight:600}
+.role{margin-left:8px;font-size:12px;font-weight:600;padding:1px 8px;border-radius:4px;background:var(--sea);color:#fff}
+.role.Staff{background:var(--sun)}.role.Citizen{background:var(--muted)}
+.tm{color:var(--muted);font-size:14px}
+.like{background:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px;color:var(--muted);font:600 13px var(--body);cursor:pointer}
+.like[aria-pressed="true"]{color:var(--sun);border-color:var(--sun)}
+.fld{display:block;margin-bottom:14px;font-weight:600;font-size:15px}
+.fld input,.fld select,.fld textarea{display:block;width:100%;margin-top:6px;padding:11px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg2);color:var(--ink);font:400 16px var(--body)}
+.fld textarea{min-height:110px;resize:vertical}
+.back{background:none;border:0;color:var(--sea);font:600 15px var(--body);cursor:pointer;padding:0;margin-bottom:16px}
+.note{color:var(--muted);font-size:14px;margin-top:28px}
+.stat{display:inline-block;padding:2px 10px;border-radius:4px;font-weight:600;font-size:13px;color:#fff;background:var(--muted)}
+.stat.Approved{background:#1a8f4a}.stat.Denied{background:#c23b3b}
+.card{border:1px solid var(--line);background:var(--bg2);border-radius:8px;padding:18px 20px;margin-bottom:14px}
+.chk{display:flex;gap:10px;align-items:flex-start;margin:6px 0 16px;font-size:15px}
+.chk input{margin-top:5px;width:18px;height:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.ok{border-left:6px solid #1a8f4a}
+.msg{font-weight:600;margin:0 0 12px}
+.apx summary{font:600 16px var(--body);display:flex;justify-content:space-between;gap:10px}
+.apx summary::after{content:""}
+.apx p{white-space:pre-wrap;margin:8px 0;font-size:15px;max-width:none}
+@media(max-width:820px){
+  .hero .wrap,.jobs,.feat,ol.steps{grid-template-columns:1fr}
+  .cats{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}.thead,.tp{grid-template-columns:1fr 48px}.thead span:nth-child(2),.thead span:nth-child(4),.thead span:nth-child(5),.tpa,.tp>.tpn:nth-of-type(2),.tp>.tpn:nth-of-type(3){display:none}
+  .feat div{border:0;margin:0 0 20px;padding:0}
+  .hero{padding-top:44px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="logo" href="#top">VINEWOOD<b>RP</b></a>
+  <nav><a href="#about">About</a><a href="#jobs">Jobs</a><a href="#rules">Rules</a><a href="#forum">Forum</a><a href="#apply">Whitelist</a><a href="#join">How to join</a></nav>
+</div></header>
+
+<main id="top">
+<div class="hero"><div class="wrap">
+  <div>
+    <h1>Every Los Santos story needs a first night.</h1>
+    <p>A serious-but-friendly FiveM roleplay server with a player-run economy, whitelisted emergency services, and staff who actually answer tickets.</p>
+    <div class="btns">
+      <a class="btn main" href="#join">Join the server</a>
+      <a class="btn" href="https://discord.gg/yourinvite">Open Discord</a>
+    </div>
+  </div>
+  <div class="plate" aria-label="Server connection details">
+    <div class="state">SAN ANDREAS &middot; CITY LIFE</div>
+    <div class="ip" id="ip">cfx.re/join/abc123</div>
+    <div class="row">
+      <span class="live"><i></i><span id="players">64</span> / 128 online</span>
+      <button class="copy" id="copy">Copy connect link</button>
+    </div>
+  </div>
+</div></div>
+
+<section id="about"><div class="wrap">
+  <h2>What makes it different</h2>
+  <p class="lead">We kept the parts that make roleplay fun and cut the grind that doesn't.</p>
+  <div class="feat">
+    <div><h3>Player-run economy</h3><p>Own a shop, run a garage, or invest in property. Prices move with what players buy and sell.</p></div>
+    <div><h3>Real emergency services</h3><p>Police, EMS, and fire are whitelisted and trained, so every call gets a proper response.</p></div>
+    <div><h3>Custom map and cars</h3><p>Hand-tuned vehicles, new interiors, and a rebuilt downtown with 40+ enterable buildings.</p></div>
+  </div>
+</div></section>
+
+<section id="jobs"><div class="wrap">
+  <h2>Pick a career</h2>
+  <p class="lead">Start on foot with a legal job, then work your way into a business or a crew. Whitelisted roles need an <a href="#apply">application</a>.</p>
+  <div class="jobs">
+    <div class="job"><div><h3>Police Department</h3><p>Patrol, detective, SWAT</p></div><span><a href="#apply">Whitelisted</a></span></div>
+    <div class="job"><div><h3>EMS and Fire</h3><p>Paramedic, firefighter, dispatch</p></div><span><a href="#apply">Whitelisted</a></span></div>
+    <div class="job"><div><h3>Mechanic</h3><p>Repairs, tuning, towing</p></div><span>Open</span></div>
+    <div class="job"><div><h3>Taxi and Delivery</h3><p>Fares, packages, food runs</p></div><span>Open</span></div>
+    <div class="job"><div><h3>Real Estate</h3><p>Sell homes and rent apartments</p></div><span>Open</span></div>
+    <div class="job"><div><h3>Criminal Crews</h3><p>Heists, racing, street trade</p></div><span><a href="#apply">Application</a></span></div>
+  </div>
+</div></section>
+
+<section id="rules"><div class="wrap">
+  <h2>Server rules</h2>
+  <p class="lead">Short version: stay in character, be kind out of character. Full rules are on Discord.</p>
+  <details open><summary>Respect every player</summary><p>No harassment, hate speech, or targeting people out of character. If a scene stops being fun for someone, ease off.</p></details>
+  <details><summary>No RDM or VDM</summary><p>Random deathmatch and vehicle deathmatch are bannable. Violence needs a clear in-character reason and a build-up.</p></details>
+  <details><summary>Value your life</summary><p>Act like your character wants to survive. Don't pull a weapon on a cop and expect to walk away.</p></details>
+  <details><summary>No exploits or cheats</summary><p>Report bugs in a ticket. Using them for money or advantage gets you a permanent ban.</p></details>
+</div></section>
+
+<section id="join"><div class="wrap">
+  <h2>Get in the city in four steps</h2>
+  <p class="lead">You need a legal copy of GTA V on PC. It takes about ten minutes.</p>
+  <ol class="steps">
+    <li><b>Install FiveM</b><span>Download it from fivem.net and sign in with your Cfx.re account.</span></li>
+    <li><b>Join Discord</b><span>Read the rules and verify to unlock the connection channel.</span></li>
+    <li><b>Connect</b><span>Open FiveM, press F8, and paste the connect link from above.</span></li>
+    <li><b>Create a character</b><span>Pick a name, a backstory, and your first job.</span></li>
+  </ol>
+</div></section>
+</main>
+
+<main id="forum-view" hidden><section style="border-top:0"><div class="wrap">
+  <h2>Community forum</h2>
+  <p class="lead">News, support, suggestions and recruitment, all in one place.</p>
+  <div id="forum-app"></div>
+  <p class="note">Demo forum: topics you post are saved only in your own browser. A forum shared by everyone needs a backend or a platform like Discourse.</p>
+</div></section></main>
+
+<main id="apply-view" hidden><section style="border-top:0"><div class="wrap" style="max-width:760px">
+  <h2>Whitelist application</h2>
+  <p class="lead">Police, EMS and fire, criminal crews and business owners are whitelisted. Applications are reviewed by staff, usually within a few days.</p>
+  <div class="fbar" id="atabs"></div>
+  <div id="apply-app"></div>
+  <p class="note">Demo system: applications are saved only in this browser, and the staff PIN is not real security. Automatic Discord posting works once you add a webhook URL in the page code, but the webhook is then visible to anyone, so a live server should send it through a backend.</p>
+</div></section></main>
+
+<footer><div class="wrap">
+  <strong>Vinewood Roleplay</strong>
+  <small>Not affiliated with Rockstar Games or Take-Two Interactive.</small>
+</div></footer>
+
+<script>
+(function(){
+  var link="cfx.re/join/abc123"; // replace with your server's join code
+  document.getElementById("ip").textContent=link;
+  var btn=document.getElementById("copy");
+  btn.addEventListener("click",function(){
+    var done=function(){btn.textContent="Copied";setTimeout(function(){btn.textContent="Copy connect link"},1800)};
+    try{navigator.clipboard.writeText("https://"+link).then(done,done)}catch(e){done()}
+  });
+  // Placeholder player count. Swap for your server's real data if you have an API endpoint.
+  var n=document.getElementById("players");
+  setInterval(function(){n.textContent=Math.max(40,Math.min(120,+n.textContent+Math.round(Math.random()*6-3)))},4000);
+})();
+
+(function(){
+  var CATS=[
+    {n:"Announcements",c:"#e8552d",d:"Server news, patch notes and events. Staff post here."},
+    {n:"General",c:"#1f9aa8",d:"Stories, screenshots and anything roleplay."},
+    {n:"Suggestions",c:"#d9a514",d:"Pitch features, jobs and map ideas."},
+    {n:"Support",c:"#5b7cff",d:"Connection issues, crashes and account help."},
+    {n:"Recruitment",c:"#a35cf0",d:"Whitelist applications, businesses and crews."},
+    {n:"Bug Reports",c:"#d64b6e",d:"Found something broken? Report it with steps."}];
+  function P(a,r,b,l){return{a:a,role:r,b:b,t:"",likes:l||0}}
+  var seed=[
+    {id:1,cat:"Announcements",title:"Patch 2.4: new downtown and housing update",pin:1,tags:["patch"],views:2410,act:"2h",posts:[P("Staff","Staff","Downtown has been rebuilt with 40+ enterable buildings. Apartments can now be rented through the Real Estate job.\n\nFull notes are in Discord.",42),P("Mia","Citizen","The new interiors look great.",5)]},
+    {id:2,cat:"Announcements",title:"Read first: server rules and whitelist process",pin:1,tags:["rules"],views:8120,act:"3w",posts:[P("Staff","Staff","Read the rules before you connect. Emergency services need a whitelist application in the Recruitment category.",77)]},
+    {id:3,cat:"Recruitment",title:"LSPD is hiring: academy opens Saturday",tags:["police"],views:640,act:"1d",posts:[P("ChiefAlvarez","Police","We need patrol officers and a dispatcher. Apply with a short character backstory.",9),P("Kira","Citizen","Applied. Looking forward to it.",1)]},
+    {id:4,cat:"Suggestions",title:"Add a bus route between Sandy Shores and the city",tags:["jobs"],views:380,act:"2d",posts:[P("Dex","Citizen","Taxi drivers could use a public route to share work with. A simple three-stop line would be enough.",14),P("Staff","Staff","Good idea. Adding it to the next sprint.",11),P("Nova","Citizen","+1, long rides get boring.",2)]},
+    {id:5,cat:"Support",title:"Stuck on loading screen at 90%",tags:["solved"],views:1190,act:"3d",posts:[P("Kira","Citizen","Game hangs at 90% on connect. Any ideas?",0),P("Staff","Staff","Clear your FiveM cache (keep server-cache only) and reconnect. If it still hangs, open a ticket with your F8 log.",18)]},
+    {id:6,cat:"General",title:"Show off your character and car",tags:[],views:910,act:"5d",posts:[P("Roman","Citizen","Post screenshots of your favorite scenes from this week.",6)]},
+    {id:7,cat:"Bug Reports",title:"Ambulance blip stays on the map after shift ends",tags:["ems"],views:210,act:"6d",posts:[P("MedicTia","EMS","Steps: clock in, take a call, clock out. The blip stays until relog.",4)]}];
+  var K="vrp_forum2",threads=seed;
+  try{var sv=localStorage.getItem(K);if(sv)threads=JSON.parse(sv)}catch(e){}
+  function save(){try{localStorage.setItem(K,JSON.stringify(threads))}catch(e){}}
+  var cat="All",sort="Latest",q="",openId=null,composing=false,liked={},app=document.getElementById("forum-app");
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function col(n){for(var i=0;i<CATS.length;i++)if(CATS[i].n===n)return CATS[i].c;return"#888"}
+  function av(n){var h=0;for(var i=0;i<n.length;i++)h=(h*31+n.charCodeAt(i))%360;return'<span class="av" style="background:hsl('+h+',50%,42%)">'+esc(n.charAt(0).toUpperCase())+'</span>'}
+  function count(n){return threads.filter(function(t){return t.cat===n}).length}
+  function rows(){
+    var r=threads.filter(function(t){return(cat==="All"||t.cat===cat)&&(!q||t.title.toLowerCase().indexOf(q)>-1)});
+    if(sort==="Top")r=r.slice().sort(function(a,b){return b.views-a.views});
+    else r=r.slice().sort(function(a,b){return(b.pin||0)-(a.pin||0)});
+    if(!r.length)return'<p class="lead" style="margin-top:24px">No topics match. Try another category or start a new topic.</p>';
+    return r.map(function(t){
+      var seen=[];t.posts.forEach(function(p){if(seen.indexOf(p.a)<0)seen.push(p.a)});
+      return'<button class="tp" data-id="'+t.id+'" style="--cc:'+col(t.cat)+'"><span><span class="tpt">'+(t.pin?'<span class="pin">PINNED</span>':'')+esc(t.title)+t.tags.map(function(g){return'<span class="tag">'+esc(g)+'</span>'}).join("")+'</span><span class="tpc"><i></i>'+esc(t.cat)+'</span></span><span class="tpa">'+seen.slice(0,3).map(av).join("")+'</span><span class="tpn'+(t.posts.length>3?' hot':'')+'">'+(t.posts.length-1)+'</span><span class="tpn">'+t.views+'</span><span class="tpn">'+esc(t.act)+'</span></button>';
+    }).join("");
+  }
+  function list(){
+    var h='<div class="cats">'+CATS.map(function(c){return'<button class="cat" data-cat="'+c.n+'" aria-pressed="'+(cat===c.n)+'" style="--cc:'+c.c+'"><b>'+c.n+'</b><span>'+c.d+'</span><small>'+count(c.n)+' topics</small></button>'}).join("")+'</div>';
+    h+='<div class="fbar"><button class="tab" data-sort="Latest" aria-pressed="'+(sort==="Latest")+'">Latest</button><button class="tab" data-sort="Top" aria-pressed="'+(sort==="Top")+'">Top</button>'+(cat!=="All"?'<button class="tab" data-cat="All" aria-pressed="false">Show all categories</button>':'')+'<input id="q" type="search" placeholder="Search topics" aria-label="Search topics" value="'+esc(q)+'"><button class="btn main" data-act="new">New topic</button></div>';
+    return h+'<div class="thead"><span>Topic</span><span>Posters</span><span>Replies</span><span>Views</span><span>Activity</span></div><div id="rows">'+rows()+'</div>';
+  }
+  function compose(){
+    return'<button class="back" data-act="back">Back to topics</button><label class="fld">Your name<input id="f-name" maxlength="30"></label><label class="fld">Category<select id="f-cat">'+CATS.slice(1).map(function(c){return'<option>'+c.n+'</option>'}).join("")+'</select></label><label class="fld">Title<input id="f-title" maxlength="90"></label><label class="fld">Message<textarea id="f-body" maxlength="1500"></textarea></label><p class="tm" id="f-err" role="alert"></p><button class="btn main" data-act="post">Post topic</button>';
+  }
+  function post(p,i,tid){
+    return'<div class="post">'+av(p.a)+'<div><span class="pn">'+esc(p.a)+'</span><span class="role '+esc(p.role)+'">'+esc(p.role)+'</span><p>'+esc(p.b)+'</p><button class="like" data-like="'+tid+'-'+i+'" aria-pressed="'+!!liked[tid+'-'+i]+'">Like '+(p.likes+(liked[tid+'-'+i]?1:0))+'</button></div></div>';
+  }
+  function view(t){
+    return'<button class="back" data-act="back">Back to topics</button><h3 style="color:var(--ink);font-size:38px;margin-bottom:4px">'+esc(t.title)+'</h3><div class="tm" style="margin-bottom:8px"><span style="color:'+col(t.cat)+';font-weight:600">'+esc(t.cat)+'</span>, '+t.views+' views</div>'+t.posts.map(function(p,i){return post(p,i,t.id)}).join("")+
+    '<div style="margin-top:24px"><label class="fld">Your name<input id="r-name" maxlength="30"></label><label class="fld">Reply<textarea id="r-body" maxlength="1000"></textarea></label><p class="tm" id="f-err" role="alert"></p><button class="btn main" data-act="reply">Post reply</button></div>';
+  }
+  function cur(){return threads.filter(function(x){return x.id===openId})[0]}
+  function render(){var t=cur();app.innerHTML=composing?compose():t?view(t):list()}
+  function val(id){return document.getElementById(id).value.trim()}
+  function err(m){document.getElementById("f-err").textContent=m}
+  app.addEventListener("input",function(e){if(e.target.id==="q"){q=e.target.value.trim().toLowerCase();document.getElementById("rows").innerHTML=rows()}});
+  app.addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b)return;var d=b.dataset;
+    if(d.cat){cat=(cat===d.cat&&d.cat!=="All")?"All":d.cat}
+    else if(d.sort){sort=d.sort}
+    else if(d.id){openId=+d.id;cur().views++;save()}
+    else if(d.like){liked[d.like]=!liked[d.like]}
+    else if(d.act==="new"){composing=true}
+    else if(d.act==="back"){composing=false;openId=null}
+    else if(d.act==="post"){
+      if(!val("f-name")||!val("f-title")||!val("f-body"))return err("Fill in your name, a title, and a message.");
+      var id=Date.now();threads.unshift({id:id,cat:val("f-cat"),title:val("f-title"),tags:[],views:1,act:"now",posts:[P(val("f-name"),"Citizen",val("f-body"))]});
+      save();composing=false;openId=id;
+    }
+    else if(d.act==="reply"){
+      if(!val("r-name")||!val("r-body"))return err("Add your name and a reply.");
+      var t=cur();t.posts.push(P(val("r-name"),"Citizen",val("r-body")));t.act="now";save();
+    }
+    else return;
+    render();
+  });
+  var home=document.getElementById("top"),fv=document.getElementById("forum-view");
+  function route(){var f=location.hash==="#forum";home.hidden=f||location.hash==="#apply";fv.hidden=!f;if(f){composing=false;openId=null;render();window.scrollTo(0,0)}}
+  window.addEventListener("hashchange",route);route();
+})();
+
+(function(){
+  var DEPTS={
+    "Police Department":"A driver refuses to stop and heads toward a crowded market. Describe what you do and why.",
+    "EMS and Fire":"You arrive at a crash with three injured people and one paramedic. How do you decide who gets help first?",
+    "Criminal Crew":"Your crew wants to rob a store while a new player is working the till. How do you keep the scene fair and fun for them?",
+    "Business Owner":"An employee keeps breaking character at work. How do you handle it in and out of character?"};
+  var DISCORD={
+    webhook:"", // paste your Discord channel webhook URL here (Channel settings > Integrations > Webhooks)
+    invite:"https://discord.gg/yourinvite",
+    roles:{"Police Department":"LSPD","EMS and Fire":"EMS","Criminal Crew":"Crew","Business Owner":"Business"} // names of your Discord roles
+  };
+  var K="vrp_apps",apps=[],post="",lastApp=null;
+  try{apps=JSON.parse(localStorage.getItem(K)||"[]")}catch(e){}
+  var roster=[];
+  try{roster=JSON.parse(localStorage.getItem("vrp_wl")||"[]")}catch(e){}
+  function saveW(){try{localStorage.setItem("vrp_wl",JSON.stringify(roster))}catch(e){}}
+  var ID_RE=/^(license|license2|steam|discord|fivem|xbl|live):[0-9a-f]+$/i;
+  function save(){try{localStorage.setItem(K,JSON.stringify(apps))}catch(e){}}
+  function cut(t,n){t=String(t);return t.length>n?t.slice(0,n-3)+"...":t}
+  function emb(a,title,color,withText){
+    var f=[["Role",a.dept],["Character",a.char],["Discord",a.disc],["Age",a.age],["Experience",a.hrs]];
+    if(withText){f.push(["Backstory",a.story],["Scenario",a.scn])}else{f.push(["Staff note",a.note||"None"]);if(a.status==="Approved")f.push(["Discord role to assign","@"+(DISCORD.roles[a.dept]||a.dept)])}
+    return{title:title,color:color,fields:f.map(function(x){return{name:x[0],value:cut(x[1],1000),inline:x[0]!=="Backstory"&&x[0]!=="Scenario"}}),footer:{text:"ID "+a.id}};
+  }
+  function send(e){
+    if(!DISCORD.webhook)return Promise.resolve("off");
+    return fetch(DISCORD.webhook,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:"Whitelist",embeds:[e]})}).then(function(r){return r.ok?"ok":"fail"}).catch(function(){return"fail"});
+  }
+  function plain(a){return"**New whitelist application "+a.id+"**\nRole: "+a.dept+"\nCharacter: "+a.char+"\nDiscord: "+a.disc+"\nAge: "+a.age+"\nExperience: "+a.hrs+"\n\nBackstory:\n"+a.story+"\n\nScenario:\n"+a.scn}
+  function success(){
+    var m=post==="ok"?"Your application was posted to our staff channel on Discord.":post==="fail"?"We couldn't post to Discord automatically. Copy your application below and paste it in the applications channel.":"Copy your application below and paste it in the applications channel on Discord so staff can see it.";
+    return'<div class="card ok"><p class="msg">Application sent.</p><p>Your application ID is <b>'+msg+'</b>. Save it, then use "Check status" to see the decision.</p><p>'+m+'</p><label class="fld">Application text<textarea id="d-txt" readonly style="min-height:150px">'+esc(plain(lastApp))+'</textarea></label><div class="btns"><button class="btn main" data-act="copy">Copy for Discord</button><a class="btn" href="'+esc(DISCORD.invite)+'" target="_blank" rel="noopener">Open Discord</a><button class="btn" data-go="Check status">Check status</button></div></div>';
+  }
+  var tab="Apply",msg="",staff=false,found=null,dept="Police Department",
+      view=document.getElementById("apply-view"),el=document.getElementById("apply-app"),tabs=document.getElementById("atabs");
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function val(id){var n=document.getElementById(id);return n?n.value.trim():""}
+  function apply(){
+    if(msg&&msg.indexOf("WL-")===0&&lastApp)return success();
+    return'<label class="fld">Whitelisted role<select id="a-dept">'+Object.keys(DEPTS).map(function(d){return'<option'+(d===dept?' selected':'')+'>'+d+'</option>'}).join("")+'</select></label>'+
+    '<div class="two"><label class="fld">Character name<input id="a-char" maxlength="40"></label><label class="fld">Discord username<input id="a-disc" maxlength="40"></label>'+
+    '<label class="fld">Your age (16 or older)<input id="a-age" type="number" min="1" max="99"></label><label class="fld">Hours of roleplay experience<select id="a-hrs"><option>Under 50</option><option>50 to 200</option><option>200 to 1000</option><option>Over 1000</option></select></label></div>'+
+    '<label class="fld">Character backstory (at least 150 characters)<textarea id="a-story"></textarea></label>'+
+    '<label class="fld">Scenario: '+esc(DEPTS[dept])+' (at least 80 characters)<textarea id="a-scn"></textarea></label>'+
+    '<label class="chk"><input type="checkbox" id="a-ok"><span>I have read the server rules and will follow them.</span></label><p class="msg" id="a-err" role="alert"></p><button class="btn main" data-act="submit">Send application</button>';
+  }
+  function status(){
+    var h='<label class="fld">Application ID<input id="s-id" placeholder="WL-XXXXX" maxlength="12"></label><button class="btn main" data-act="lookup">Check status</button>';
+    if(found===0)h+='<p class="msg" style="margin-top:16px">No application found with that ID in this browser.</p>';
+    else if(found)h+='<div class="card" style="margin-top:18px"><p style="margin:0 0 8px"><span class="stat '+found.status+'">'+found.status+'</span> <b>'+esc(found.dept)+'</b> for '+esc(found.char)+'</p><p class="tm" style="margin:0">Sent '+esc(found.date)+'</p>'+(found.note?'<p style="margin:10px 0 0"><b>Staff note:</b> '+esc(found.note)+'</p>':'<p class="tm" style="margin:10px 0 0">No staff note yet.</p>')+(found.status==="Approved"?'<p style="margin:10px 0 0">Next step: open a ticket in Discord to book your whitelist interview. Staff will give you the @'+esc(DISCORD.roles[found.dept]||found.dept)+' role there.</p>':'')+'</div>';
+    return h;
+  }
+  function review(){
+    if(!staff)return'<label class="fld">Staff PIN<input id="p-pin" type="password"></label><p class="msg" id="a-err" role="alert">'+esc(msg)+'</p><button class="btn main" data-act="unlock">Open review queue</button><p class="tm">Demo PIN: staff</p>';
+    var pend=apps.filter(function(a){return a.status==="Pending"}).length;
+    var h='<p class="msg">'+pend+' pending, '+apps.length+' total</p>';
+    if(!apps.length)h+='<p class="lead">No applications yet. Send one from the Apply tab to see it here.</p>';
+    apps.forEach(function(a){
+      h+='<div class="card"><details class="apx"'+(a.status==="Pending"?' open':'')+'><summary><span><b>'+esc(a.char)+'</b> for '+esc(a.dept)+' ('+a.id+')</span><span class="stat '+a.status+'">'+a.status+'</span></summary>'+
+      '<p class="tm">Discord: '+esc(a.disc)+', age '+esc(a.age)+', experience: '+esc(a.hrs)+', sent '+esc(a.date)+'</p><p><b>Backstory</b>\n'+esc(a.story)+'</p><p><b>Scenario</b>\n'+esc(a.scn)+'</p>'+
+      (a.status==='Approved'?'<p class="msg">Give them the @'+esc(DISCORD.roles[a.dept]||a.dept)+' role in Discord.</p>':'')+'<label class="fld">Note to applicant<input id="n-'+a.id+'" value="'+esc(a.note)+'" maxlength="200"></label><div class="btns"><button class="btn main" data-dec="Approved" data-aid="'+a.id+'">Approve</button><button class="btn" data-dec="Denied" data-aid="'+a.id+'">Deny</button></div></details></div>';
+    });
+    return h;
+  }
+  function groups(){var g={},miss=0;roster.forEach(function(r){if(!r.ident){miss++;return}var e=g[r.ident]||(g[r.ident]={name:r.name,roles:[]});if(e.roles.indexOf(r.dept)<0)e.roles.push(r.dept)});return{g:g,miss:miss}}
+  function wl(){
+    var x=groups(),h='<p class="msg" id="a-err" role="alert">'+roster.length+' whitelisted roles, '+x.miss+' waiting for an identifier</p>';
+    if(!roster.length)h+='<p class="lead">Nobody is whitelisted yet. Approve an application in Staff review, or add a player below.</p>';
+    roster.forEach(function(r){
+      h+='<div class="card"><p style="margin:0 0 8px"><b>'+esc(r.name)+'</b> ('+esc(r.dept)+') <span class="tm">'+esc(r.disc||"")+'</span></p><label class="fld" style="margin-bottom:10px">Server identifier<input id="i-'+r.k+'" value="'+esc(r.ident)+'" placeholder="license:0123abcd..."></label><div class="btns"><button class="btn main" data-wsave="'+r.k+'">Save</button><button class="btn" data-wrem="'+r.k+'">Remove</button></div></div>';
+    });
+    h+='<div class="card"><b>Add a player manually</b><div class="two" style="margin-top:10px"><label class="fld">Player name<input id="m-name" maxlength="40"></label><label class="fld">Identifier<input id="m-id" placeholder="license:0123abcd..."></label></div><label class="fld">Role<select id="m-dept">'+Object.keys(DEPTS).map(function(d){return'<option>'+d+'</option>'}).join("")+'</select></label><button class="btn" data-act="wadd">Add to whitelist</button></div>';
+    h+='<label class="fld" style="margin-top:20px">whitelist.json (save this in your whitelist resource folder)<textarea id="w-txt" readonly style="min-height:170px;font:13px monospace">'+esc(JSON.stringify(x.g,null,2))+'</textarea></label><button class="btn main" data-act="copy" data-t="w-txt">Copy whitelist.json</button>';
+    return h;
+  }
+  function render(){
+    tabs.innerHTML=["Apply","Check status","Staff review","Server whitelist"].map(function(t){return'<button class="tab" data-go="'+t+'" aria-pressed="'+(t===tab)+'">'+t+'</button>'}).join("");
+    el.innerHTML=tab==="Apply"?apply():tab==="Check status"?status():tab==="Server whitelist"&&staff?wl():review();
+  }
+  function go(t){tab=t;if(t!=="Apply")msg="";if(t==="Apply"&&msg.indexOf("WL-")===0)msg=msg;render()}
+  function err(m){document.getElementById("a-err").textContent=m}
+  view.addEventListener("change",function(e){if(e.target.id==="a-dept"){dept=e.target.value;var keep=["a-char","a-disc","a-age","a-story"].map(val);render();["a-char","a-disc","a-age","a-story"].forEach(function(id,i){document.getElementById(id).value=keep[i]})}});
+  view.addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b)return;var d=b.dataset;
+    if(d.go){if(d.go==="Apply")msg="";found=null;return go(d.go)}
+    if(d.act==="copy"){var t=document.getElementById(d.t||"d-txt");t.select();try{document.execCommand("copy")}catch(x){}try{navigator.clipboard.writeText(t.value)}catch(x){}b.textContent="Copied";return}
+    if(d.act==="submit"){
+      var age=+val("a-age");
+      if(!val("a-char")||!val("a-disc"))return err("Add your character name and Discord username.");
+      if(!age||age<16)return err("You must be 16 or older to apply.");
+      if(val("a-story").length<150)return err("Your backstory needs at least 150 characters.");
+      if(val("a-scn").length<80)return err("Your scenario answer needs at least 80 characters.");
+      if(!document.getElementById("a-ok").checked)return err("Confirm that you have read the rules.");
+      var id="WL-"+Math.random().toString(36).slice(2,7).toUpperCase();
+      apps.unshift({id:id,dept:val("a-dept"),char:val("a-char"),disc:val("a-disc"),age:age,hrs:val("a-hrs"),story:val("a-story"),scn:val("a-scn"),status:"Pending",note:"",date:new Date().toLocaleDateString()});
+      save();msg=id;post="";lastApp=apps[0];send(emb(apps[0],"New whitelist application "+id,0xe8552d,true)).then(function(r){post=r;if(msg===id&&!view.hidden&&tab==="Apply")render()});return render();
+    }
+    if(d.act==="lookup"){var id2=val("s-id").toUpperCase();found=apps.filter(function(a){return a.id===id2})[0]||0;return render()}
+    if(d.act==="unlock"){if(val("p-pin")==="staff"){staff=true;msg=""}else msg="Wrong PIN.";return render()}
+    if(d.wsave){var r=roster.filter(function(x){return x.k===d.wsave})[0],v=val("i-"+d.wsave);if(v&&!ID_RE.test(v))return err("Use an identifier like license:0123abcd or discord:123456789.");r.ident=v.toLowerCase();saveW();return render()}
+    if(d.wrem){roster=roster.filter(function(x){return x.k!==d.wrem});saveW();return render()}
+    if(d.act==="wadd"){var nm=val("m-name"),ix=val("m-id");if(!nm)return err("Add the player's name.");if(!ID_RE.test(ix))return err("Use an identifier like license:0123abcd or discord:123456789.");roster.push({k:"M"+Date.now(),name:nm,disc:"",dept:val("m-dept"),ident:ix.toLowerCase()});saveW();return render()}
+    if(d.dec){var a=apps.filter(function(x){return x.id===d.aid})[0];a.status=d.dec;a.note=val("n-"+d.aid);save();
+      if(d.dec==="Approved"&&!roster.some(function(r){return r.k===a.id}))roster.push({k:a.id,name:a.char,disc:a.disc,dept:a.dept,ident:""});
+      if(d.dec==="Denied")roster=roster.filter(function(r){return r.k!==a.id});
+      saveW();send(emb(a,"Application "+a.id+" "+d.dec.toLowerCase(),d.dec==="Approved"?0x1a8f4a:0xc23b3b,false));render()}
+  });
+  function route(){var on=location.hash==="#apply";view.hidden=!on;if(on){if(msg.indexOf("WL-")!==0)msg="";render();window.scrollTo(0,0)}}
+  window.addEventListener("hashchange",route);route();
+})();
+</script>
+</body>
+</html>
